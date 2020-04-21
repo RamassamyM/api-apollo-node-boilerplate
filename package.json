@@ -59,7 +59,7 @@
     "lodash": "^4.17.11",
     "merge-graphql-schemas": "^1.5.8",
     "moment": "^2.24.0",
-    "mongoose": "^5.4.20",
+    "mongoose": "^5.7.5",
     "mongoose-data-seed": "^2.1.6",
     "morgan": "^1.9.1",
     "nodemailer": "^5.1.1",
