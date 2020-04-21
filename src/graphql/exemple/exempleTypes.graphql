@@ -1,0 +1,30 @@
+directive @requireAuth(roles: [Role] = [admin]) on FIELD_DEFINITION
+directive @deprecated(reason: String = "No longer supported") on FIELD_DEFINITION | ENUM_VALUE
+directive @computed(value: String) on FIELD_DEFINITION
+directive @hasScope(scopes: [String]) on FIELD_DEFINITION
+
+scalar Date
+scalar JSON
+
+type Exemple {
+  _id: ID
+  title: String
+  keywords: [String]
+  description: String
+  author: User
+  createdAt: Date
+  updatedAt: Date
+  isDeleted: Boolean
+}
+
+type Query {
+  exemples: [Exemple] @requireAuth(roles: [admin, user])
+  exemple(_id: ID!): Exemple @requireAuth(roles: [admin, user])
+  myExemples: [Exemple] @requireAuth(roles: [admin, user])
+}
+
+type Mutation {
+  createExemple(title: String!, keywords: [String], description: String): Exemple @requireAuth(roles: [admin, user])
+  editExemple(_id: ID!, title: String, keywords: [String], description: String): Exemple @requireAuth(roles: [admin, user])
+  deleteExemple(_id: ID!): Exemple @requireAuth(roles: [admin, user])
+}

@@ -1,0 +1,15 @@
+FROM node:12.4.0-stretch as builder
+
+RUN mkdir -p /code
+WORKDIR /code
+
+COPY . /code/
+RUN yarn install --check-files \
+  && yarn build
+
+FROM node:12.4.0-stretch as final
+
+RUN mkdir -p /app
+WORKDIR /app
+COPY --from=builder /code/build /app
+COPY --from=builder /code/release.sh /app

@@ -1,0 +1,75 @@
+directive @requireAuth(roles: [Role] = [admin]) on FIELD_DEFINITION
+directive @deprecated(reason: String = "No longer supported") on FIELD_DEFINITION | ENUM_VALUE
+directive @computed(value: String) on FIELD_DEFINITION
+directive @hasScope(scopes: [String]) on FIELD_DEFINITION
+
+scalar Date
+scalar JSON
+
+enum Role {
+  user
+  admin
+}
+
+type User {
+  _id: ID
+  email: String
+  username: String
+  avatarColor: String
+  avatar: String
+  provider: String
+  role: String
+  displayNameByProvider: String
+  isAccountValidatedByEmail: Boolean
+  lastLogged: Date
+  createdAt: Date
+  description: String
+}
+
+type AuthPayload {
+  jwt: String!
+  jwtExpiration: Int!
+  user: User
+}
+
+type RefreshPayload {
+  jwt: String!
+  jwtExpiration: Int!
+}
+
+input AuthInput {
+  accessToken: String!
+}
+
+input LdapInput {
+  username: String!
+  password: String!
+}
+
+type Query {
+  users: [User] @requireAuth(roles: [admin])
+  user(_id: ID!): User @requireAuth(roles: [admin, user]) @hasScope(scopes: ["User:Read"])
+  me: User @requireAuth(roles: [admin, user])
+}
+
+type SimpleConfirmation {
+  confirmed: Boolean
+}
+
+type Confirmation {
+  confirmed: Boolean
+  user: User
+}
+
+type Mutation {
+  signup(email: String!, username: String!, genres: [String], password: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  logout: SimpleConfirmation
+  editUser(_id: ID!, firstname: String, lastname: String, avatarColor: String): User @requireAuth(roles: [admin, user])
+  deleteUserWithPassword(_id: ID!, password: String!): Confirmation @requireAuth(roles: [admin, user])
+  deleteUser(_id: ID!): User @requireAuth(roles: [admin, user])
+  authFacebook(input: AuthInput!): AuthPayload!
+  authGoogle(input: AuthInput!): AuthPayload!
+  authLdap(input: LdapInput!): AuthPayload!
+  refreshToken: RefreshPayload!
+}
