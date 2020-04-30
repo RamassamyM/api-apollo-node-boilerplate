@@ -242,18 +242,22 @@ export default {
       }
     },
     changePassword: async function(root, { password, key }, context) {
-      const passlink = Passlink.findOne({ key: key })
+      console.log("password given: ", password, " and key given: ", key)
+      const passlink = await Passlink.findOne({ key: key }).populate('user')
+      console.log("Passlink found: ", passlink)
       if (!passlink || passlink.expiration < Date.now()) {
         throw new ChangePasswordError('Wrong or expired link to change password')
       }
       try {
         const user = passlink.user
         if (user.changePassword(password)) {
-          await Passlink.deleteMany({ user: user })
-          return { confirmed: true }
+          const deletedpasslinks = await Passlink.deleteMany({ user: user })
+          console.log("Delete this passlinks: ", deletedpasslinks)
+          return { confirmed: true, message: "Your password was successfully updated" }
         }
         throw new Error ('Not able to change password')
       } catch (err) {
+        console.log(err)
         throw new ChangePasswordError('Error while trying to save new password, try again or contact support')
       }
     }
