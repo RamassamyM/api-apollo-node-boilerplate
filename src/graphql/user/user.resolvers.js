@@ -2,8 +2,10 @@ import { GraphQLScalarType } from 'graphql'
 import GraphQLJSON from 'graphql-type-json'
 import moment from 'moment'
 import User from '../../models/user.model'
-import { HTTPS_SET } from '../../config'
-import { RefreshTokenInvalidError, WrongCredentialsError, EmailError, DeleteError, EditError } from './user.errors'
+import { v4 } from 'uuid'
+import Passlink from '../../models/passlink.model'
+import { HTTPS_SET, CLIENT_ORIGIN } from '../../config'
+import { RefreshTokenInvalidError, WrongCredentialsError, EmailError, DeleteError, EditError, SendNewPasswordLinkError, ChangePasswordError } from './user.errors'
 import getRandomAvatarColor from '../utils/getRandomAvatarColor'
 import { authenticateFacebookPromise } from '../../setup/auth/strategies/facebookTokenStrategy'
 import { authenticateGooglePromise } from '../../setup/auth/strategies/googleTokenStrategy'
@@ -12,6 +14,7 @@ import { authenticateLdapPromise } from '../../setup/auth/strategies/ldapStrateg
 import _get from 'lodash/get'
 import { encrypt, decrypt } from '../../utils/encryption'
 import { verifyRefreshToken } from '../../utils/verifyToken'
+import { sendForgotPasswordEmail } from '../../utils/sendEmail'
 
 // The userLocationOnContext is defined in the creation of GraphqlServer in graphqlserver.js
 const userLocationInContext = 'req.currentUser'
@@ -215,6 +218,45 @@ export default {
       }
       return user
     },
+    sendForgotPasswordEmail: async function (root, { email }, context) {
+      console.log('Checking if email exists in database: ', email)
+      const users = await User.find({ email })
+      const user = users[0] || ''
+      console.log("User found: ", user.username, " with email: ", user.email)
+      if (!user) {
+        return { confirmed: true, message: 'We sent you an email with a link if this email was good.' }
+      }
+      try {
+        await user.forgotPasswordLockAccount()
+        const key = v4()
+        console.log("key V4 generated for the link: ", key)
+        const expiration = Date.now() + 60*60*24*1000
+        let passlink = await Passlink.findOneAndUpdate({ user: user }, { user, key, expiration }, { new: true, upsert: true })
+        const passlinkUrl = `${CLIENT_ORIGIN}/newpassword/${key}`
+        console.log("PasslinkUrl generated: ", passlinkUrl)
+        sendForgotPasswordEmail({ passlinkUrl, email: email, receiver: user })
+        return { confirmed: true, message: 'We sent you an email with a link, you should receive it soon.' }
+      } catch (err) {
+        console.log(err)
+        throw new SendNewPasswordLinkError('We could not send you the email, try later or contact support.')
+      }
+    },
+    changePassword: async function(root, { password, key }, context) {
+      const passlink = Passlink.findOne({ key: key })
+      if (!passlink || passlink.expiration < Date.now()) {
+        throw new ChangePasswordError('Wrong or expired link to change password')
+      }
+      try {
+        const user = passlink.user
+        if (user.changePassword(password)) {
+          await Passlink.deleteMany({ user: user })
+          return { confirmed: true }
+        }
+        throw new Error ('Not able to change password')
+      } catch (err) {
+        throw new ChangePasswordError('Error while trying to save new password, try again or contact support')
+      }
+    }
   },
   Date: new GraphQLScalarType({
     name: 'Date',

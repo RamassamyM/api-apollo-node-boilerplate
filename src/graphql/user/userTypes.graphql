@@ -61,7 +61,14 @@ type Confirmation {
   user: User
 }
 
+type MessageConfirmation {
+  confirmed: Boolean,
+  message: String
+}
+
 type Mutation {
+  changePassword(password: String!, key: String!): SimpleConfirmation!
+  sendForgotPasswordEmail(email: String!): MessageConfirmation!
   signup(email: String!, username: String!, genres: [String], password: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
   logout: SimpleConfirmation

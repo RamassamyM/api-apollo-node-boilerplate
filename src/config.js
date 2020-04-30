@@ -36,3 +36,7 @@ export const HTTPS_SET = process.env.HTTPS_SET || process.env.NODE_ENV === 'prod
 export const LDAP_BASE = process.env.LDAP_BASE
 export const LDAP_SEARCH_FILTER = process.env.LDAP_SEARCH_FILTER
 export const PATH_TO_TLS_LDAP_PUBLIC_KEY = process.env.PATH_TO_TLS_LDAP_PUBLIC_KEY
+export const EMAIL_HOST = process.env.EMAIL_HOST
+export const EMAIL_PORT = process.env.EMAIL_PORT
+export const EMAIL_USER = process.env.EMAIL_USER
+export const EMAIL_PASS = process.env.EMAIL_PASS

@@ -39,3 +39,17 @@ export class EditError extends ApolloError {
     })
   }
 }
+export class SendNewPasswordLinkError extends ApolloError {
+  constructor (message) {
+    super('SendNewPasswordLinkError', 'SEND_NEW_PASSWORD_LINK_ERROR', {
+      message: message,
+    })
+  }
+}
+export class ChangePasswordError extends ApolloError {
+  constructor (message) {
+    super('ChangePasswordError', 'CHANGE_PASSWORD_ERROR', {
+      message: message,
+    })
+  }
+}

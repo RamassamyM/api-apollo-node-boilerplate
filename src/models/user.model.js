@@ -27,9 +27,12 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     index: { unique: true },
+    lowercase: true,
+    trim: true,
     required: true,
   },
   password: { type: String, default: undefined },
+  passwordLocked: { type: Boolean, default: false },
   isAccountValidatedByEmail: {
     type: Boolean,
     default: false,
@@ -82,6 +85,9 @@ userSchema.statics.signup = async ({username, email, password, avatarColor}) => 
   try {
     const hashedPassword = await hashPassword(password.toString())
     const userExist = await User.checkExistence({username, email})
+    if (userExist) {
+      console.log('Could not create user because user already exists')
+    }
     if (!!hashedPassword && !userExist) {
       const user = new User({ 'password': hashedPassword, avatarColor, email, username })
       const { jwt, jwtExpiration, refreshToken, refreshTokenExpiration } = await user.generateTokens({scopes: ['User:Read', 'User:Write']})
@@ -201,6 +207,31 @@ userSchema.statics.deleteWithPassword = async ({ _id, password }) => {
     }
     return { user: deletedUser, confirmed: true }
   } catch (err) {
+    throw err
+  }
+}
+
+userSchema.methods.forgotPasswordLockAccount = async function() {
+  try {
+    this.passwordLocked = true
+    return this.save
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+userSchema.methods.changePassword = async function(password) {
+  try {
+    const hashedPassword = await hashPassword(password.toString())
+    if (!!hashedPassword) {
+      this.password = hashedPassword
+      this.passwordLocked = false
+      await this.save()
+      return true
+    }
+    throw new Error('Error while trying to change password. Try again or contact support.')
+  } catch (err) {
+    console.log(err)
     throw err
   }
 }
