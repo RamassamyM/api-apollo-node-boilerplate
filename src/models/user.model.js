@@ -176,6 +176,11 @@ userSchema.statics.authenticate = async ({email, password}) => {
     }
     // if user, verify the user password with the password provided
     const isValidPassword = await comparePassword(password, user.password)
+    // You can choose to lock the login with previous password if a change password has been asked by email
+    // if (user.passwordLocked) {
+    //   console.log('Try to log but account locked')
+    //   return { jwt: null, refreshToken: null, user: null }
+    // }
     if (!isValidPassword) {
       console.log('ERROR Login failed : password error')
       return { jwt: null, refreshToken: null, user: null }
