@@ -19,7 +19,7 @@ export async function sendForgotPasswordEmail({ email, receiver, passlinkUrl } =
     // send mail with defined transport object
     let info = await transporter.sendMail({
       from: '"MyApp" <contact@myapp.com>', // sender address
-      to: 'ramassamymichael@gmail.com', // list of receivers
+      to: receiver, // list of receivers
       subject: "Changing forgotten password ✔", // Subject line
       text: `Hello ${receiver.username}, here is the link to change your password: ${passlinkUrl}`, // plain text body
       html: `<b>Hello ${receiver.username},</b><p>Here is the link to change your password: <p><a href="${passlinkUrl}">CHANGE PASSWORD</a>` // html body
