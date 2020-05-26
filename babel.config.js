@@ -8,6 +8,7 @@ module.exports = function (api) {
     presets: [
       [
         "@babel/env",
+        // '@babel/preset-env',
         {
           targets: {
             'node': '12.4.0'

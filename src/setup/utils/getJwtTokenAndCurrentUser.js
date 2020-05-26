@@ -1,4 +1,4 @@
-import { verifyJWT } from '../../utils/verifyToken'
+import { verifyJWT } from '../../utils/generateAndVerifyToken'
 import { AuthenticationError } from 'apollo-server-errors'
 import User from '../../models/user.model'
 

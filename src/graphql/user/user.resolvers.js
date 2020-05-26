@@ -13,8 +13,8 @@ import { authenticateLdapPromise } from '../../setup/auth/strategies/ldapStrateg
 // import { authenticated } from '../utils/authenticated'
 import _get from 'lodash/get'
 import { encrypt, decrypt } from '../../utils/encryption'
-import { verifyRefreshToken } from '../../utils/verifyToken'
-import { sendForgotPasswordEmail } from '../../utils/sendEmail'
+import { verifyRefreshToken } from '../../utils/generateAndVerifyToken'
+import { sendForgottenPasswordEmail } from '../../utils/emailServices/sendEmail'
 
 // The userLocationOnContext is defined in the creation of GraphqlServer in graphqlserver.js
 const userLocationInContext = 'req.currentUser'
@@ -234,7 +234,7 @@ export default {
         let passlink = await Passlink.findOneAndUpdate({ user: user }, { user, key, expiration }, { new: true, upsert: true })
         const passlinkUrl = `${CLIENT_ORIGIN}/newpassword/${key}`
         console.log("PasslinkUrl generated: ", passlinkUrl)
-        sendForgotPasswordEmail({ passlinkUrl, email: email, receiver: user })
+        sendForgottenPasswordEmail({ passlinkUrl, email: email, receiver: user })
         return { confirmed: true, message: 'We sent you an email with a link, you should receive it soon.' }
       } catch (err) {
         console.log(err)

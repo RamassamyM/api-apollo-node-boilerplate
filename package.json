@@ -16,7 +16,8 @@
     "start:deamon": "pm2 start server.js",
     "stop": "pm2 stop server.js",
     "logs": "pm2 logs",
-    "eslint": "eslint src"
+    "eslint": "eslint src",
+    "test": "cross-env NODE_ENV=test jest --watch"
   },
   "engines": {
     "node": ">=12.4.0",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@babel/cli": "^7.6.3",
     "@babel/core": "^7.6.3",
+    "babel-jest": "^26.0.1",
     "consola": "^2.5.6",
     "debug": "^4.1.1",
     "documentation": "^9.3.1",
@@ -36,6 +38,7 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
+    "jest": "^26.0.1",
     "jsdoc": "^3.5.5",
     "nodemon": "^1.18.10"
   },

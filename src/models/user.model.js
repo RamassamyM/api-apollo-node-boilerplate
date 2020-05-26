@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { generateJWTToken, generateRefreshToken } from '../utils/generateToken'
+import { generateJWTToken, generateRefreshToken } from '../utils/generateAndVerifyToken'
 import { hashPassword, comparePassword } from './utils/passwordLib'
 import debug from 'debug'
 
