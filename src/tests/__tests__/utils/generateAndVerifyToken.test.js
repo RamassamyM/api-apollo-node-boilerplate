@@ -1,4 +1,4 @@
-import { generateJWTToken, generateRefreshToken, verifyJWT, verifyRefreshToken } from '../../utils/generateAndVerifyToken'
+import { generateJWTToken, generateRefreshToken, verifyJWT, verifyRefreshToken } from '../../../utils/generateAndVerifyToken'
 import _ from 'lodash'
 
 describe('Generate a jwt token', () => {

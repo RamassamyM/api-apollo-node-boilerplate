@@ -1,53 +1,44 @@
 require('dotenv').config()
 import nodemailer from 'nodemailer'
 
-export const EMAIL_HOST = process.env.EMAIL_HOST
-export const EMAIL_PORT = process.env.EMAIL_PORT
-export const SMTP_EMAIL_USER = process.env.SMTP_EMAIL_USER
-export const SMTP_EMAIL_PASS = process.env.SMTP_EMAIL_PASS
+export const SMTP_DEFAULT_HOST = process.env.SMTP_DEFAULT_HOST
+export const SMTP_DEFAULT_PORT = parseInt(process.env.SMTP_DEFAULT_PORT, 10)
+export const SMTP_DEFAULT_USER = process.env.SMTP_DEFAULT_USER
+export const SMTP_DEFAULT_PASS = process.env.SMTP_DEFAULT_PASS
+export const TEST_EMAIL_HOST = process.env.TEST_EMAIL_HOST || "smtp.ethereal.email"
+export const TEST_EMAIL_PORT = parseInt(process.env.TEST_EMAIL_PORT, 10) || 587
+export const SMTP_SECURE = process.env.SMTP_SECURE === "true"
+export const DEFAULT_SENDER_NAME = process.env.DEFAULT_SENDER_NAME || "MyApp Team"
+export const DEFAULT_SENDER_EMAIL = process.env.DEFAULT_SENDER_EMAIL || "contact@myapp.com"
 
-async function configureMailOptions() {
+export const MAILER = async () => {
   try {
-    let mailConfig = {}
     const testing = process.env.NODE_ENV === 'test'
-    if (EMAIL_HOST && EMAIL_PORT && SMTP_EMAIL_USER && SMTP_EMAIL_PASS && !testing) {
-      mailConfig = {
-        host: EMAIL_HOST,
-        port: EMAIL_PORT,
-        secure: false,
+    if (SMTP_DEFAULT_HOST && SMTP_DEFAULT_HOST && SMTP_DEFAULT_USER && SMTP_DEFAULT_PASS && !testing) {
+      return {
+        host: SMTP_DEFAULT_HOST,
+        port: SMTP_DEFAULT_PORT,
+        secure: SMTP_SECURE,
         auth: {
-          user: SMTP_EMAIL_USER,
-          pass: SMTP_EMAIL_PASS,
+          user: SMTP_DEFAULT_USER,
+          pass: SMTP_DEFAULT_PASS,
         }
       }
     } else {
       // Generate test SMTP service account from ethereal.email if no real email account for testing
       let testAccount = await nodemailer.createTestAccount()
-      mailConfig = {
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false, // true for 465, false for other ports
+      return {
+        host: TEST_EMAIL_HOST,
+        port: TEST_EMAIL_PORT,
+        secure: SMTP_SECURE, // true for 465, false for other ports
         auth: {
           user: testAccount.user, // generated ethereal user
           pass: testAccount.pass // generated ethereal password
         }
       }
     }
-    return mailConfig
   } catch (err) {
-    console.log("ERROR [configureMailProperties()]: ",err)
+    console.log("ERROR [configureSMTPoptions]: ",err)
     throw err
   }
-}
-
-export const MAILER = {
-  options: configureMailOptions(),
-  from: {
-    defaultSenderName: process.env.DEFAULT_SENDER_NAME || "MyApp Team",
-    defaultSenderEmail: process.env.DEFAULT_SENDER_EMAIL || "contact@myapp.com"
-  },
-  emailHost: process.env.EMAIL_HOST,
-  emailPort: process.env.EMAIL_PORT,
-  SmtpEmailuser: process.env.SMTP_EMAIL_USER,
-  SmtpEmailPass: process.env.SMTP_EMAIL_PASS,
 }

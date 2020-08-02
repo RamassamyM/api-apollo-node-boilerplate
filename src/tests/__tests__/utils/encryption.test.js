@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from '../../utils/encryption'
+import { encrypt, decrypt } from '../../../utils/encryption'
 import _ from 'lodash'
 
 describe('Encryption Service', function() {

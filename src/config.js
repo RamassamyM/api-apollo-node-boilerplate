@@ -36,10 +36,3 @@ export const HTTPS_SET = process.env.HTTPS_SET || process.env.NODE_ENV === 'prod
 export const LDAP_BASE = process.env.LDAP_BASE
 export const LDAP_SEARCH_FILTER = process.env.LDAP_SEARCH_FILTER
 export const PATH_TO_TLS_LDAP_PUBLIC_KEY = process.env.PATH_TO_TLS_LDAP_PUBLIC_KEY
-export const SMTP_DEFAULT_HOST = process.env.SMTP_DEFAULT_HOST
-export const SMTP_DEFAULT_PORT = parseInt(process.env.SMTP_DEFAULT_PORT, 10)
-export const SMTP_DEFAULT_USER = process.env.SMTP_DEFAULT_USER
-export const SMTP_DEFAULT_PASS = process.env.SMTP_DEFAULT_PASS
-export const SMTP_DEFAULT_SECURE = process.env.SMTP_DEFAULT_SECURE == 'true'
-export const DEFAULT_EMAIL_SENDER_NAME = process.env.DEFAULT_EMAIL_SENDER_NAME
-export const DEFAULT_EMAIL_SENDER_EMAIL = process.env.DEFAULT_EMAIL_SENDER_EMAIL
