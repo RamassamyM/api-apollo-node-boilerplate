@@ -18,6 +18,7 @@
     "logs": "pm2 logs",
     "eslint": "eslint src",
     "test": "cross-env NODE_ENV=test jest --watch",
+    "coverage": "cross-env NODE_ENV=test jest --coverage",
     "doc": "./node_modules/.bin/jsdoc --package ./package.json --readme ./readme.md -c ./jsdoc/jsdoc.config.js"
   },
   "engines": {

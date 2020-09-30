@@ -13,6 +13,18 @@ yarn dev
 ```
 yarn test
 ```
+### Generate code coverage report web report
+```
+yarn coverage
+```
+Access in folder /coverage/Icov-report/index.html
+
+### Generate code documentation web server
+```
+yarn doc
+```
+Access in folder /jsdoc/server/1.0.0/index.html
+
 ### Apply linter ESLINT on code
 ```
 yarn eslint
