@@ -1,5 +1,5 @@
 /** 
- * Generate the data to be seeded
+ * @file Generate the data to be seeded
  * Terminal command to launch the seed : yarn md-seed run --dropdb
  * Terminal command to launch the seed whitout deleting the database (warning : could create double data) : yarn md-seed run
  * Terminal command to add new seed (modelName could be 'users' or 'exemples' ...) without erasing previous data and reseeding same data user: yarn md-seed run modelName

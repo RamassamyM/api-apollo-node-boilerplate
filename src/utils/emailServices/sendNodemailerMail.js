@@ -42,7 +42,7 @@ const sendEmailAndReturnStatus = async (mailContent, transporter) => {
  * @param { Object } param0
  * @param { String } param0.emailTemplateName 
  * @param { Object } param0.mailContentProps 
- * @param { Object } [param0.sendingOptions]
+ * @param { Object } [param0.sendingOptions = {}]
  */
 export const sendEmail = async ({ emailTemplateName, mailContentProps, sendingOptions = {} }) => {
   try {

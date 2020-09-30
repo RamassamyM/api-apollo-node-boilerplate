@@ -14,3 +14,4 @@ data/
 app.env
 build/
 jsdoc/server/
+coverage/
