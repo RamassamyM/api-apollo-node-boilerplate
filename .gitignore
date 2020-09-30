@@ -13,4 +13,4 @@ secrets/
 data/
 app.env
 build/
-./jsdoc/server/
+jsdoc/server/
