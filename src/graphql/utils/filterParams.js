@@ -1,4 +1,7 @@
-// Deprecated : graphql schema already defines authorized permittedParams
+/**
+ * @todo delete the file and method
+ * Deprecated : graphql schema already defines authorized permittedParams
+ */
 export default async (params, filters) => {
   let permittedParams = {}
   await function () {

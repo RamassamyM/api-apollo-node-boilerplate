@@ -6,7 +6,18 @@ import _get from 'lodash/get'
 // The userLocationOnContext is defined in the creation of GraphqlServer in graphqlserver.js
 const scopeLocationInContext = 'request.clearToken.scopes'
 
+/**
+ * @class
+ * @classdesc Create a has scope schema directive with visitFielDefinition method
+ * See graphql-tools
+ */
 export class HasScope extends SchemaDirectiveVisitor {
+  /**
+   * Authorize or throws an authentication error
+   * See graphql-tools
+   * @param {*} field 
+   * @throw Authentication error if user has not the scope to perform
+   */
   visitFieldDefinition (field) {
     const { resolve = defaultFieldResolver } = field
     const { scopes } = this.args

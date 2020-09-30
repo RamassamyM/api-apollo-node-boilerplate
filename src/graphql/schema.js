@@ -29,4 +29,11 @@ const schema = makeExecutableSchema({
   logger,
 })
 
+/**
+ * @namespace
+ * @property { Object } typeDefs
+ * @property { Object } resolvers
+ * @property { Object } schemaDirectives
+ * @property { function } logger
+ */
 export default schema

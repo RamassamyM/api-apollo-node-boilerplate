@@ -1,5 +1,7 @@
-// Deprecated : use only in resolver but prefer schemadirectives
-
+/**
+ * @todo delete the file and method
+ * Deprecated : use only in resolver but prefer schemadirectives
+ */
 import { AuthenticationError } from 'apollo-server-errors'
 
 // exemple : use in resolver :

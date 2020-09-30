@@ -1,6 +1,11 @@
 import { DirectiveLocation, GraphQLDirective, GraphQLString, defaultFieldResolver } from 'graphql'
 import { SchemaDirectiveVisitor } from 'graphql-tools'
 
+/**
+ * @class
+ * @classdesc Create a computed schema directive
+ * See graphql-tools
+ */
 export class Computed extends SchemaDirectiveVisitor {
   static getDirectiveDeclaration (directiveName = 'rest') {
     return new GraphQLDirective({

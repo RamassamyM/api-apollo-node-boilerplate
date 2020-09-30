@@ -1,5 +1,10 @@
 import { SchemaDirectiveVisitor } from 'graphql-tools'
 
+/**
+ * @class
+ * @classdesc Create a deprecated schema directive
+ * See graphql-tools
+ */
 export class Deprecated extends SchemaDirectiveVisitor {
   visitObject (object) {
     this._deprecate(object)
