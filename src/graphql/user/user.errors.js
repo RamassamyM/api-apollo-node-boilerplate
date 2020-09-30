@@ -1,5 +1,9 @@
 import { ApolloError } from 'apollo-server-errors'
 
+/**
+ * @class
+ * @classdesc Create an error with a message for wrong credentials that have been given
+ */
 export class WrongCredentialsError extends ApolloError {
   constructor () {
     super('WrongCredentialsError', 'CREDENTIALS_ERROR', {
@@ -8,6 +12,10 @@ export class WrongCredentialsError extends ApolloError {
   }
 }
 
+/**
+ * @class
+ * @classdesc Create an error with a message for invalid refresh token that has been given
+ */
 export class RefreshTokenInvalidError extends ApolloError {
   constructor () {
     super('RefreshTokenInvalidError', 'REFRESHTOKEN_INVALID', {
@@ -16,6 +24,10 @@ export class RefreshTokenInvalidError extends ApolloError {
   }
 }
 
+/**
+ * @class
+ * @classdesc Create an error with a message when an error occurrend while sending an email
+ */
 export class EmailError extends ApolloError {
   constructor () {
     super('EmailError', 'EMAIL_ERROR', {
@@ -24,6 +36,10 @@ export class EmailError extends ApolloError {
   }
 }
 
+/**
+ * @class
+ * @classdesc Create an error with a message when trying to delete a document
+ */
 export class DeleteError extends ApolloError {
   constructor (message) {
     super('DeleteError', 'DELETE_ERROR', {
@@ -32,6 +48,10 @@ export class DeleteError extends ApolloError {
   }
 }
 
+/**
+ * @class
+ * @classdesc Create an error with a message when trying to edit an entry
+ */
 export class EditError extends ApolloError {
   constructor (message) {
     super('EditError', 'EDIT_ERROR', {
@@ -39,6 +59,11 @@ export class EditError extends ApolloError {
     })
   }
 }
+
+/**
+ * @class
+ * @classdesc Create an error with a message when trying to send a link to change the password
+ */
 export class SendNewPasswordLinkError extends ApolloError {
   constructor (message) {
     super('SendNewPasswordLinkError', 'SEND_NEW_PASSWORD_LINK_ERROR', {
@@ -46,6 +71,11 @@ export class SendNewPasswordLinkError extends ApolloError {
     })
   }
 }
+
+/**
+ * @class
+ * @classdesc Create an error with a message when trying to change a password
+ */
 export class ChangePasswordError extends ApolloError {
   constructor (message) {
     super('ChangePasswordError', 'CHANGE_PASSWORD_ERROR', {
