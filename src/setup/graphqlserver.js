@@ -1,4 +1,6 @@
-// Express
+/**
+ * @todo Implement graphQL with apollo and remove graphql-yoga to limit packages dependencies and use a stronger community in the future
+ */
 import { GraphQLServer } from 'graphql-yoga'
 import schema from '../graphql/schema'
 import morgan from 'morgan'
@@ -7,6 +9,8 @@ import cookieParser from 'cookie-parser'
 import getCurrentUserfromJwtToken from './utils/getJwtTokenAndCurrentUser'
 import { logRequest, logResponse } from './utils/debugLogger'
 import NoIntrospection from 'graphql-disable-introspection'
+// If a Node.js compression middleware is needed to compress bodies response, 
+// uncomment the line below and see compression package documentation to implement it
 // import compression from 'compression'
 import cors from 'cors'
 import {
@@ -14,6 +18,7 @@ import {
   SUBSCRIPTION_ENDPOINT,
   CLIENT_ORIGIN,
   JWT_SECRET,
+  // Now a jwt token is used not a cookie for authentication
   // COOKIE_DOMAIN,
   // COOKIE_NAME,
   PUBLIC_URL,
@@ -23,6 +28,9 @@ import {
   ENV,
 } from '../config'
 
+/**
+ * Launch GraphQL API server
+ */
 export default function () {
   console.log(`Starting server graphql in mode ${ENV}`)
   console.log(`Client-origin authorization for CORS: ${CLIENT_ORIGIN}`)
@@ -39,11 +47,12 @@ export default function () {
     //   cert: CERT,
     //   key: KEY,
     // },
+    // Uncomment the lines below to have more error infos in terminal for debugging
     // formatError: error => {
     //   console.log(error)
     //   return error
     // },
-    cors: false, // apollo cors work properly with same origin client so needed to deactivate it an use cors with express directly
+    cors: false, // apollo cors work properly with same origin client so needed to deactivate it and use cors with express directly
     formatResponse: res => {
       logResponse(res)
       return res

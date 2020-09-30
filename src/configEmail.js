@@ -11,10 +11,17 @@ export const SMTP_SECURE = process.env.SMTP_SECURE === "true"
 export const DEFAULT_SENDER_NAME = process.env.DEFAULT_SENDER_NAME || "MyApp Team"
 export const DEFAULT_SENDER_EMAIL = process.env.DEFAULT_SENDER_EMAIL || "contact@myapp.com"
 
+/**
+ * Returns the SMTP mailing parameters according to environment variables (host, port, user, pass) set 
+ * or generate test SMTP environment with nodemailer with test parameters 
+ * or throw an error
+ * @return { Object } An Object containing SMTP parameters like host port secure and auth as an object with user and pass
+ * @throws Will throw and error if a problem occur, for exemple with nodemailer.createTestAccount()
+ */
 export const MAILER = async () => {
   try {
     const testing = process.env.NODE_ENV === 'test'
-    if (SMTP_DEFAULT_HOST && SMTP_DEFAULT_HOST && SMTP_DEFAULT_USER && SMTP_DEFAULT_PASS && !testing) {
+    if (SMTP_DEFAULT_HOST && SMTP_DEFAULT_PORT && SMTP_DEFAULT_USER && SMTP_DEFAULT_PASS && !testing) {
       return {
         host: SMTP_DEFAULT_HOST,
         port: SMTP_DEFAULT_PORT,

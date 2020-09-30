@@ -14,7 +14,7 @@ import { authenticateLdapPromise } from '../../setup/auth/strategies/ldapStrateg
 import _get from 'lodash/get'
 import { encrypt, decrypt } from '../../utils/encryption'
 import { verifyRefreshToken } from '../../utils/generateAndVerifyToken'
-import { sendForgottenPasswordEmail } from '../../utils/emailServices/sendEmail'
+import { sendForgottenPasswordEmail } from '../../utils/emailServices/sendNodemailerMail'
 
 // The userLocationOnContext is defined in the creation of GraphqlServer in graphqlserver.js
 const userLocationInContext = 'req.currentUser'

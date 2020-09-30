@@ -37,6 +37,13 @@ const sendEmailAndReturnStatus = async (mailContent, transporter) => {
   return { sendingSuccess: true, responseInfos }
 }
 
+/**
+ * 
+ * @param { Object } param0
+ * @param { String } param0.emailTemplateName 
+ * @param { Object } param0.mailContentProps 
+ * @param { Object } [param0.sendingOptions]
+ */
 export const sendEmail = async ({ emailTemplateName, mailContentProps, sendingOptions = {} }) => {
   try {
     // instantiate an EmailTemplate object to access the good emailTemplate generator method

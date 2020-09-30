@@ -12,13 +12,13 @@ const USERNAME = process.env.ADMIN_USERNAME
 
 /**
  * Generate the data to be seeded
- * @returns { Object } Data to be seeded as an object containing the model names to seed as arrays of objects
- * @returns { Object[] } data.users
- * @returns { String } data.users[].email
- * @returns { String } data.users[].password
- * @returns { String } data.users[].username
- * @returns { Boolean } data.users[].roleAdmin
- * @returns { Object[] } data.exemples
+ * @return { Object } Data to be seeded as an object containing the model names to seed as arrays of objects
+ * @return { Object[] } data.users
+ * @return { String } data.users[].email
+ * @return { String } data.users[].password
+ * @return { String } data.users[].username
+ * @return { Boolean } data.users[].roleAdmin
+ * @return { Object[] } data.exemples
  */
 export function seed() {
   const data = {
