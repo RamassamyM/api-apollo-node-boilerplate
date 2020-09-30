@@ -4,8 +4,8 @@ import mongoose from 'mongoose'
 
 /**
  * Convert an id or an array of id in object ids
- * @param { String|String[]} ids
- * @return { *|*[] } ObjectId or array of ObjectIds to be used with mongoose
+ * @param { (String|String[]) } ids
+ * @return { * } ObjectId or array of ObjectIds to be used with mongoose
  */
 export function toObjectId (ids) {
   if (ids.constructor === Array) {
