@@ -1,6 +1,7 @@
 import graphql from 'graphql'
+// NoIntrospection will make __schema and __type disallowed in the query.
 /**
- * @function NoIntrospection NoIntrospection will make __schema and __type disallowed in the query.
+ * @function NoIntrospection
  */
 export function NoIntrospection (context) {
   return {

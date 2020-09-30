@@ -29,9 +29,10 @@ import {
 } from '../config'
 
 /**
- * @function setupGraphqlServer Launch GraphQL API server
+ * @function setupGraphqlServer
  */
 export default function () {
+  // Launch GraphQL API server
   console.log(`Starting server graphql in mode ${ENV}`)
   console.log(`Client-origin authorization for CORS: ${CLIENT_ORIGIN}`)
   const rules = ENV === 'production' ? [NoIntrospection] : []

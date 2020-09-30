@@ -13,13 +13,6 @@ const userLocationInContext = 'req.currentUser'
  * See graphql-tools
  */
 export class RequireAuth extends SchemaDirectiveVisitor {
-
-  /**
-   * Authorize or throws an authentication error
-   * See graphql-tools
-   * @param {*} field 
-   * @throw Authentication error if use is not signed in
-   */
   visitFieldDefinition (field) {
     const { resolve = defaultFieldResolver } = field
     const { roles } = this.args
@@ -52,10 +45,6 @@ export class RequireAuth extends SchemaDirectiveVisitor {
  * See graphql-tools
  */
 export class Auth extends SchemaDirectiveVisitor {
-  /**
-   * See graphql-tools
-   * @param {*} type 
-   */
   visitObject (type) {
     this.ensureFieldsWrapped(type)
     type._requiredAuthRoles = this.args.requires
@@ -63,11 +52,6 @@ export class Auth extends SchemaDirectiveVisitor {
   // Visitor methods for nested types like fields and arguments
   // also receive a details object that provides information about
   // the parent and grandparent types.
-  /**
-   * See graphql-tools
-   * @param {*} field 
-   * @param {*} details 
-   */
   visitFieldDefinition (field, details) {
     this.ensureFieldsWrapped(details.objectType)
     field._requiredAuthRoles = this.args.requires

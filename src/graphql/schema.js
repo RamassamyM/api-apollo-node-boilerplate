@@ -15,6 +15,13 @@ const resolvers = mergeResolvers(resolversArray)
 const typesArray = fileLoader(path.join(__dirname, './**/*.graphql'), { recursive: true })
 const typeDefs = mergeTypes(typesArray, { all: true })
 
+/**
+ * @type { Object }
+ * @property { Object } typeDefs
+ * @property { Object } resolvers
+ * @property { Object } schemaDirectives
+ * @property { function } logger
+ */
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
@@ -29,11 +36,4 @@ const schema = makeExecutableSchema({
   logger,
 })
 
-/**
- * @namespace
- * @property { Object } typeDefs
- * @property { Object } resolvers
- * @property { Object } schemaDirectives
- * @property { function } logger
- */
 export default schema

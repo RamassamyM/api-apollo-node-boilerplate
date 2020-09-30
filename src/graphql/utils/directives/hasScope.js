@@ -12,12 +12,6 @@ const scopeLocationInContext = 'request.clearToken.scopes'
  * See graphql-tools
  */
 export class HasScope extends SchemaDirectiveVisitor {
-  /**
-   * Authorize or throws an authentication error
-   * See graphql-tools
-   * @param {*} field 
-   * @throw Authentication error if user has not the scope to perform
-   */
   visitFieldDefinition (field) {
     const { resolve = defaultFieldResolver } = field
     const { scopes } = this.args

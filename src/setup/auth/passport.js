@@ -4,10 +4,10 @@ import { setupJwtStrategy } from './strategies/jwtStrategy'
 // import { setupLdapTokenStrategy } from './strategies/ldapStrategy'
 
 /**
- * @function setupPassport launch the different setups for different passport package authentication
+ * @function setupPassport 
  */
 export default function () {
-  // Configure here the authentication strategies allowed by uncommenting below
+  // Launch the different setups for different passport package authentication by uncommenting below
   // setupFacebookTokenStrategy()
   // setupLdapTokenStrategy()
   // setupGoogleTokenStrategy()
