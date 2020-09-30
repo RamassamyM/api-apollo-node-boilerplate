@@ -5,7 +5,7 @@ module.exports = {
   "recurseDepth": 10,
   "source": {
     "include": ["seeders", "src"],
-    "exclude": [],
+    "exclude": ["src/tests"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\|node_modules/|docs)_"
   },

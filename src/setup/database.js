@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { MONGO_URI, DB_DEBUG } from '../config'
 
 /**
- * Configure and connect mongoose to MongoDB and log in the console the connexion or an error
+ * @function setupDatabase Configure and connect mongoose to MongoDB and log in the console the connexion or an error
  * To have more infos whil debugging, set DB_DEBUG to true in config.js
  */
 export default function () {

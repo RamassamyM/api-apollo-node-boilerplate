@@ -88,7 +88,7 @@ async function verifyToken (authToken, key) {
  * Check the validity of a jwt token and return the uncrypted token (clear)
  * @param { String } authToken  
  * @return { Object } clearToken 
- * @throws an error of an error occurs 
+ * @throws an error if an error occurs 
  */
 export async function verifyJWT (authToken) {
   try {

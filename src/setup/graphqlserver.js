@@ -29,7 +29,7 @@ import {
 } from '../config'
 
 /**
- * Launch GraphQL API server
+ * @function setupGraphqlServer Launch GraphQL API server
  */
 export default function () {
   console.log(`Starting server graphql in mode ${ENV}`)

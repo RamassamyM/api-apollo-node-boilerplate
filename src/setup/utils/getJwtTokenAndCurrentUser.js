@@ -2,6 +2,12 @@ import { verifyJWT } from '../../utils/generateAndVerifyToken'
 import { AuthenticationError } from 'apollo-server-errors'
 import User from '../../models/user.model'
 
+/**
+ * Extract and return an authentication token from the authorization header of the request
+ * @param { Object } req
+ * @return { String } authToken
+ * @throws AuthenticationError
+ */
 async function getTokenFromRequest (req) {
   const authorization = await req.headers['authorization']
   if (authorization) {
@@ -11,6 +17,12 @@ async function getTokenFromRequest (req) {
   throw new AuthenticationError('ERROR Authentication failed while searching token')
 }
 
+/**
+ * Extract jwt token from request and check if token is valid, decrypt the token and 
+ * find the corresponding user in database then return the user
+ * @param { Object } req
+ * @return { Object } currentUser (it is null if no user is found or if token is invalid)
+ */
 export default async function getCurrentUserfromJwtToken (req) {
   let authToken = ''
   // let clearToken = null
