@@ -1,7 +1,7 @@
 /**
  * Handle Mongoose tasks related to the Exemple collection
  *
- * @module ModelExemple
+ * @module ExempleModel
  * @requires mongoose
  */
 import mongoose from 'mongoose'
@@ -20,7 +20,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 /**
  * @constructor
  * @desc Create a model schema for Exemple with mongoose
- * @memberof ModelExemple
+ * @memberof ExempleModel
  * @private
  */
 const exempleSchema = new mongoose.Schema({

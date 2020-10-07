@@ -1,7 +1,7 @@
 /**
  * Handle Mongoose tasks related to the Passlink collection
  *
- * @module ModelPasslink
+ * @module PasslinkModel
  * @requires mongoose
  */
 import mongoose from 'mongoose'
@@ -18,7 +18,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 /**
  * @constructor
  * @desc Create a model schema for passlinks with mongoose
- * @memberof ModelPasslink
+ * @memberof PasslinkModel
  * @private
  */
 const passlinkSchema = new mongoose.Schema({

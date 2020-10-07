@@ -1,3 +1,8 @@
+/**
+ * Handle a collection of pre formatted error classes linked to users 
+ * @module UserErrors
+ * @requires apollo-server-errors
+ */
 import { ApolloError } from 'apollo-server-errors'
 
 /**

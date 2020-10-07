@@ -1,7 +1,7 @@
 /**
  * Handle Mongoose tasks related to the User collection
  *
- * @module ModelUser
+ * @module UserModel
  * @requires mongoose
  */
 import mongoose from 'mongoose'
@@ -42,7 +42,7 @@ export const levelEnum = ['Beginner', 'Rookie', 'All Star', 'All of fame']
 /**
  * @constructor
  * @desc Create a model schema for user with mongoose
- * @memberof ModelUser
+ * @memberof UserModel
  * @private
  */
 const userSchema = new mongoose.Schema(
@@ -92,7 +92,7 @@ const userSchema = new mongoose.Schema(
  * @param { String } parameters.username
  * @param { String } parameters.email
  * @return { Boolean } the existence or not of the user checked in the database
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @static
  */
 userSchema.statics.checkExistence = async ({username, email}) => {
@@ -118,7 +118,7 @@ userSchema.statics.checkExistence = async ({username, email}) => {
  * @param { Object } parameters
  * @param { Object } parameters.scopes
  * @return { Object } An object with jwt, jwtExpiration, refreshToken, refreshTokenExpiration
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @instance
  */
 userSchema.methods.generateTokens = async function ({scopes}) {
@@ -142,7 +142,7 @@ userSchema.methods.generateTokens = async function ({scopes}) {
  * @return { Object } An object with jwt, jwtExpiration, refreshToken, refreshTokenExpiration and 
  * the created user instance as an object
  * @throws an error
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @static
  */
 userSchema.statics.signup = async ({username, email, password, avatarColor}) => {
@@ -193,19 +193,19 @@ function getEmail (profile) {
 /**
  * @function upsertGoogleUser
  * @desc Create a user in database according to linked Google user or update an existing user
- * @param { Object } parameters
- * @param { String } parameters.accessToken
- * @param { String } parameters.refreshToken
- * @param { Object } parameters.profile an Object with all given infos from the authentication provider
- * @param { String } parameters.profile.id as the id of the user in the database provider
- * @param { String } parameters.profile.provider as the identification name of the provider, for example google
- * @param { String } [parameters.profile.displayName] as the displayed name of the user in the provider database
- * @param { Object } [parameters.profile.name] which can include familyName, givenName
- * @param { Object } [parameters.profile._json] which can include first_name, last_name
- * @param { Object } [parameters.profile.email]
- * @param { String[] } [parameters.profile.emails]
+ * @param { Object } data
+ * @param { String } data.accessToken
+ * @param { String } data.refreshToken
+ * @param { Object } data.profile an Object with all given infos from the authentication provider
+ * @param { String } data.profile.id as the id of the user in the database provider
+ * @param { String } data.profile.provider as the identification name of the provider, for example google
+ * @param { String } [data.profile.displayName] as the displayed name of the user in the provider database
+ * @param { Object } [data.profile.name] which can include familyName, givenName
+ * @param { Object } [data.profile._json] which can include first_name, last_name
+ * @param { Object } [data.profile.email]
+ * @param { String[] } [data.profile.emails]
  * @return { Object } the updated or created user instance
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @static
  */
 userSchema.statics.upsertGoogleUser = async function ({ accessToken, refreshToken, profile }) {
@@ -230,19 +230,19 @@ userSchema.statics.upsertGoogleUser = async function ({ accessToken, refreshToke
 /**
  * @function upsertFacebookUser
  * @desc Create a user in database according to linked Google user or update an existing user
- * @param { Object } parameters
- * @param { String } parameters.accessToken
- * @param { String } parameters.refreshToken
- * @param { Object } parameters.profile an Object with all given infos from the authentication provider
- * @param { String } parameters.profile.id as the id of the user in the database provider
- * @param { String } parameters.profile.provider as the identification name of the provider, for example google
- * @param { String } [parameters.profile.displayName] as the displayed name of the user in the provider database
- * @param { Object } [parameters.profile.name] which can include familyName, givenName
- * @param { Object } [parameters.profile._json] which can include first_name, last_name
- * @param { Object } [parameters.profile.email]
- * @param { String[] } [parameters.profile.emails]
+ * @param { Object } data
+ * @param { String } data.accessToken
+ * @param { String } data.refreshToken
+ * @param { Object } data.profile an Object with all given infos from the authentication provider
+ * @param { String } data.profile.id as the id of the user in the database provider
+ * @param { String } data.profile.provider as the identification name of the provider, for example google
+ * @param { String } [data.profile.displayName] as the displayed name of the user in the provider database
+ * @param { Object } [data.profile.name] which can include familyName, givenName
+ * @param { Object } [data.profile._json] which can include first_name, last_name
+ * @param { Object } [data.profile.email]
+ * @param { String[] } [data.profile.emails]
  * @return { Object } the updated or created user instance
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @static
  */
 userSchema.statics.upsertFacebookUser = async function ({ accessToken, refreshToken, profile }) {
@@ -266,16 +266,16 @@ userSchema.statics.upsertFacebookUser = async function ({ accessToken, refreshTo
 /**
  * @function upsertGoogleUser
  * @desc Create a user in database according to linked Google user or update an existing user
- * @param { Object } parameters
- * @param { Object } parameters.userLdap
- * @param { String } parameters.userLdap.uidNumber
- * @param { String } [parameters.userLdap.uid]
- * @param { String } [parameters.userLdap.displayName]
- * @param { String } [parameters.userLdap.givenName]
- * @param { String } [parameters.userLdap.familyName]
- * @param { String } [parameters.userLdap.mail]
+ * @param { Object } data
+ * @param { Object } data.userLdap
+ * @param { String } data.userLdap.uidNumber
+ * @param { String } [data.userLdap.uid]
+ * @param { String } [data.userLdap.displayName]
+ * @param { String } [data.userLdap.givenName]
+ * @param { String } [data.userLdap.familyName]
+ * @param { String } [data.userLdap.mail]
  * @return { Object } the updated or created user instance
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @static
  */
 userSchema.statics.upsertLdapUser = async function ({ userLdap }) {
@@ -303,7 +303,7 @@ userSchema.statics.upsertLdapUser = async function ({ userLdap }) {
  * @return { Object } An object with jwt, jwtExpiration, refreshToken, refreshTokenExpiration, 
  * and user as the user instance object
  * @throws an error
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @static
  */
 userSchema.statics.authenticate = async ({email, password}) => {
@@ -345,7 +345,7 @@ userSchema.statics.authenticate = async ({email, password}) => {
  * @return { Object } An object with a confirmed boolena and 
  * the deleted user instance object in case of error to be able to recreate the user
  * @throws an error
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @static
  */
 userSchema.statics.deleteWithPassword = async ({ _id, password }) => {
@@ -372,7 +372,7 @@ userSchema.statics.deleteWithPassword = async ({ _id, password }) => {
  * @function forgotPasswordLockAccount
  * @desc Lock the user account when a forgot password link is asked to avoid to log in with the old password
  * @return { Object } An object which is the user instance
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @instance
  */
 userSchema.methods.forgotPasswordLockAccount = async function() {
@@ -389,7 +389,7 @@ userSchema.methods.forgotPasswordLockAccount = async function() {
  * @desc Hash the password and save it in database, remove the passwordLocked
  * @return { Boolean } The confirmation that the new password has been correctly savec and hashed
  * @throws an error
- * @memberof module:ModelUser~User
+ * @memberof module:UserModel~User
  * @instance
  */
 userSchema.methods.changePassword = async function(password) {
