@@ -1,3 +1,7 @@
+/**
+ * @module config
+ * @requires fs
+ */
 import fs from 'fs'
 require('dotenv').config()
 // const crypto = require('crypto')

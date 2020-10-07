@@ -1,3 +1,7 @@
+/**
+ * @module facebookTokenStrategy
+ * @requires passport
+ */
 import passport from 'passport'
 import FacebookStrategy from 'passport-facebook-token'
 // import FacebookStrategy from 'passport-facebook' // not working

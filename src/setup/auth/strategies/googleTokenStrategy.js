@@ -1,3 +1,7 @@
+/**
+ * @module googleTokenStrategy
+ * @requires passport
+ */
 import passport from 'passport'
 import { Strategy as GoogleTokenStrategy } from 'passport-google-token'
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '../../../config'

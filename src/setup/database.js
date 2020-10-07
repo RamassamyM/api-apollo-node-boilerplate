@@ -1,3 +1,7 @@
+/**
+ * @module database
+ * @requires mongoose
+ */
 import mongoose from 'mongoose'
 import { MONGO_URI, DB_DEBUG } from '../config'
 

@@ -1,3 +1,7 @@
+/**
+ * @module sendNodemailerMail
+ * @requires nodemailer
+ */
 import nodemailer from 'nodemailer'
 import EmailTemplate from './emailTemplates'
 import * as ConfigEmail from '../../configEmail'

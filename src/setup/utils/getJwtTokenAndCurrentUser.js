@@ -1,3 +1,7 @@
+/**
+ * @module getJwtTokenAndCurrentUSer
+ * @requires apollo-server-errors
+ */
 import { verifyJWT } from '../../utils/generateAndVerifyToken'
 import { AuthenticationError } from 'apollo-server-errors'
 import User from '../../models/user.model'

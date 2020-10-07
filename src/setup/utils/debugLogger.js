@@ -1,3 +1,6 @@
+/**
+ * @module debugLogger
+ */
 import { GRAPHQL_DEBUG } from '../../config'
 
 /**

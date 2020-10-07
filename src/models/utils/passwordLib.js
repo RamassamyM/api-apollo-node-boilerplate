@@ -1,3 +1,7 @@
+/**
+ * @module passwordLib
+ * @requires bcryptjs
+ */
 import bcryptjs from 'bcryptjs'
 
 /**

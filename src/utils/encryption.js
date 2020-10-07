@@ -1,3 +1,7 @@
+/**
+ * @module encryption
+ * @requires crypto
+ */
 import crypto from 'crypto'
 // const crypto = require('crypto')
 import { CRYPTOPASSWORD } from '../config'

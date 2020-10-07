@@ -1,4 +1,7 @@
 /**
+ * @module graphqlserver
+ * @requires schema
+ * @requires graphql-yoga
  * @todo Implement graphQL with apollo and remove graphql-yoga to limit packages dependencies and use a stronger community in the future
  */
 import { GraphQLServer } from 'graphql-yoga'

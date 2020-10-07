@@ -1,3 +1,6 @@
+/**
+ * @module emailTemplate
+ */
 import { DEFAULT_SENDER_EMAIL, DEFAULT_SENDER_NAME } from '../../configEmail'
 
 export default class EmailTemplate {

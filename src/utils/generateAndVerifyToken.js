@@ -1,3 +1,8 @@
+/**
+ * @module generateAndVerifyToken
+ * @requires jsonwebtoken
+ * @requires lodash
+ */
 import jwt from 'jsonwebtoken'
 import { JWT_PUBLICKEY, REFRESHTOKEN_PUBLICKEY, JWT_PRIVATEKEY, REFRESHTOKEN_PRIVATEKEY, JWT_TOKEN_DURATION, REFRESHTOKEN_DURATION } from '../config'
 import _ from 'lodash'

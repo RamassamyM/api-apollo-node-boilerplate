@@ -1,3 +1,9 @@
+/**
+ * @module schema
+ * @requires path
+ * @requires graphql-tools
+ * @requires merge-graphql-schemas
+ */
 import path from 'path'
 import { makeExecutableSchema } from 'graphql-tools'
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas'

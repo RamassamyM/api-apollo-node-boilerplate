@@ -1,3 +1,7 @@
+/**
+ * @module toObjectId
+ * @requires mongoose
+ */
 import mongoose from 'mongoose'
 // ids can be one id or an array of id
 // this function will transform it in objectIds

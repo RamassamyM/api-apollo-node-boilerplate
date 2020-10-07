@@ -1,12 +1,52 @@
+/**
+ * Handle Mongoose tasks related to the User collection
+ *
+ * @module ModelUser
+ * @requires mongoose
+ */
 import mongoose from 'mongoose'
 import { generateJWTToken, generateRefreshToken } from '../utils/generateAndVerifyToken'
 import { hashPassword, comparePassword } from './utils/passwordLib'
 import debug from 'debug'
 
 const ObjectId = mongoose.Schema.Types.ObjectId
-const levelEnum = ['Beginner', 'Rookie', 'All Star', 'All of fame']
 
-const userSchema = new mongoose.Schema({
+/**
+ * Enum for level values
+ * @enum
+ * @desc The list of levels available for a user as an array
+ * @readonly
+ */
+export const levelEnum = ['Beginner', 'Rookie', 'All Star', 'All of fame']
+
+
+/**
+ * @typedef { Object } UserParameters
+ * @property { String } username unique
+ * @property { String } [avatarColor]
+ * @property { String } [avatar]
+ * @property { String } description
+ * @property { String } [role]
+ * @property { Boolean } [roleAdmin]
+ * @property { String } email unique
+ * @property { String } [password]
+ * @property { Boolean } [passwordLocked]
+ * @property { Boolean } [isAccountValidatedByEmail]
+ * @property { String } [provider]
+ * @property { String } [providerId]
+ * @property { String } [providerToken]
+ * @property { String } [refreshToken]
+ * @property { String } [displayNameByProvider]
+ * @property { Date } [lastlogged] read only
+ */
+/**
+ * @constructor
+ * @desc Create a model schema for user with mongoose
+ * @memberof ModelUser
+ * @private
+ */
+const userSchema = new mongoose.Schema(
+  {
   username: { type: String, index: { unique: true } },
   avatarColor: { type: String, default: '#2196F3' },
   avatar: {
@@ -45,15 +85,16 @@ const userSchema = new mongoose.Schema({
   lastlogged: Date,
 }, { timestamps: true })
 
-// userSchema.methods.validPassword = function (password) {
-//   return comparePassword(password, this.local.password)
-// }
-
-// userSchema.methods.addOnePlayedGame = function () {
-//   this.playedGamesNb = this.playedGamesNb + 1
-//   return this.save()
-// }
-
+/**
+ * @function checkExistence 
+ * @desc Check existence of a user in database according to the username or the email
+ * @param { Object } parameters
+ * @param { String } parameters.username
+ * @param { String } parameters.email
+ * @return { Boolean } the existence or not of the user checked in the database
+ * @memberof module:ModelUser~User
+ * @static
+ */
 userSchema.statics.checkExistence = async ({username, email}) => {
   let exist
   await User.find().or([{ username: username }, { email: email }])
@@ -71,6 +112,15 @@ userSchema.statics.checkExistence = async ({username, email}) => {
   return exist
 }
 
+/**
+ * @function generateTokens
+ * @desc generates tokens (jwt and refresk tokens with expirations) for the current user instance with scopes provided
+ * @param { Object } parameters
+ * @param { Object } parameters.scopes
+ * @return { Object } An object with jwt, jwtExpiration, refreshToken, refreshTokenExpiration
+ * @memberof module:ModelUser~User
+ * @instance
+ */
 userSchema.methods.generateTokens = async function ({scopes}) {
   const id = this._id
   const tokenPayload = { _id: id, scopes }
@@ -81,6 +131,20 @@ userSchema.methods.generateTokens = async function ({scopes}) {
   return { jwt, jwtExpiration, refreshToken, refreshTokenExpiration }
 }
 
+/**
+ * @function signup
+ * @desc Signup a user
+ * @param { Object } parameters
+ * @param { String } parameters.username
+ * @param { String } parameters.email
+ * @param { String } parameters.password
+ * @param { String } parameters.avatarColor as hexadecimal String
+ * @return { Object } An object with jwt, jwtExpiration, refreshToken, refreshTokenExpiration and 
+ * the created user instance as an object
+ * @throws an error
+ * @memberof module:ModelUser~User
+ * @static
+ */
 userSchema.statics.signup = async ({username, email, password, avatarColor}) => {
   try {
     const hashedPassword = await hashPassword(password.toString())
@@ -101,18 +165,49 @@ userSchema.statics.signup = async ({username, email, password, avatarColor}) => 
   }
 }
 
+/**
+ * @todo implement function getGoogleAvatar
+ * @function getGoogleAvatar
+ * @param { Object } profile
+ */
 // function getGoogleAvatar (profile) {
 //   if (profile.photos && profile.photos.length) {
 //     return profile.photos[0].value
 //   }
 // }
 
+/**
+ * @function getEmail
+ * @desc Returns the first email of the emails of a user if ther is one or return null
+ * @param { Object } profile of a user
+ * @return { (String|null) } an email or null
+ * @private
+ */
 function getEmail (profile) {
   if (profile.emails && profile.emails.length) {
     return profile.emails[0].value
   }
+  return null
 }
 
+/**
+ * @function upsertGoogleUser
+ * @desc Create a user in database according to linked Google user or update an existing user
+ * @param { Object } parameters
+ * @param { String } parameters.accessToken
+ * @param { String } parameters.refreshToken
+ * @param { Object } parameters.profile an Object with all given infos from the authentication provider
+ * @param { String } parameters.profile.id as the id of the user in the database provider
+ * @param { String } parameters.profile.provider as the identification name of the provider, for example google
+ * @param { String } [parameters.profile.displayName] as the displayed name of the user in the provider database
+ * @param { Object } [parameters.profile.name] which can include familyName, givenName
+ * @param { Object } [parameters.profile._json] which can include first_name, last_name
+ * @param { Object } [parameters.profile.email]
+ * @param { String[] } [parameters.profile.emails]
+ * @return { Object } the updated or created user instance
+ * @memberof module:ModelUser~User
+ * @static
+ */
 userSchema.statics.upsertGoogleUser = async function ({ accessToken, refreshToken, profile }) {
   const query = { providerId: profile.id, provider: profile.provider }
   const update = {
@@ -123,7 +218,7 @@ userSchema.statics.upsertGoogleUser = async function ({ accessToken, refreshToke
     email: profile.email || getEmail(profile) || '',
     // avatar: getGoogleAvatar(profile),
     providerToken: accessToken,
-    provider: profile.provider || 'facebook',
+    provider: profile.provider || 'google',
     providerId: profile.id,
     refreshToken: refreshToken,
     isSignedUp: true,
@@ -132,6 +227,24 @@ userSchema.statics.upsertGoogleUser = async function ({ accessToken, refreshToke
   return User.findOneAndUpdate(query, update, options)
 }
 
+/**
+ * @function upsertFacebookUser
+ * @desc Create a user in database according to linked Google user or update an existing user
+ * @param { Object } parameters
+ * @param { String } parameters.accessToken
+ * @param { String } parameters.refreshToken
+ * @param { Object } parameters.profile an Object with all given infos from the authentication provider
+ * @param { String } parameters.profile.id as the id of the user in the database provider
+ * @param { String } parameters.profile.provider as the identification name of the provider, for example google
+ * @param { String } [parameters.profile.displayName] as the displayed name of the user in the provider database
+ * @param { Object } [parameters.profile.name] which can include familyName, givenName
+ * @param { Object } [parameters.profile._json] which can include first_name, last_name
+ * @param { Object } [parameters.profile.email]
+ * @param { String[] } [parameters.profile.emails]
+ * @return { Object } the updated or created user instance
+ * @memberof module:ModelUser~User
+ * @static
+ */
 userSchema.statics.upsertFacebookUser = async function ({ accessToken, refreshToken, profile }) {
   const query = { providerId: profile.id, provider: profile.provider }
   const update = {
@@ -150,6 +263,21 @@ userSchema.statics.upsertFacebookUser = async function ({ accessToken, refreshTo
   return User.findOneAndUpdate(query, update, options)
 }
 
+/**
+ * @function upsertGoogleUser
+ * @desc Create a user in database according to linked Google user or update an existing user
+ * @param { Object } parameters
+ * @param { Object } parameters.userLdap
+ * @param { String } parameters.userLdap.uidNumber
+ * @param { String } [parameters.userLdap.uid]
+ * @param { String } [parameters.userLdap.displayName]
+ * @param { String } [parameters.userLdap.givenName]
+ * @param { String } [parameters.userLdap.familyName]
+ * @param { String } [parameters.userLdap.mail]
+ * @return { Object } the updated or created user instance
+ * @memberof module:ModelUser~User
+ * @static
+ */
 userSchema.statics.upsertLdapUser = async function ({ userLdap }) {
   const query = { providerId: userLdap.uidNumber, provider: 'ldap' }
   const update = {
@@ -166,6 +294,18 @@ userSchema.statics.upsertLdapUser = async function ({ userLdap }) {
   return User.findOneAndUpdate(query, update, options)
 }
 
+/**
+ * @function authenticate
+ * @desc Authenticate the user for logging in and create authentication tokens for the logged user
+ * @param { Object } parameters
+ * @param { String } parameters.email
+ * @param { String } parameters.password
+ * @return { Object } An object with jwt, jwtExpiration, refreshToken, refreshTokenExpiration, 
+ * and user as the user instance object
+ * @throws an error
+ * @memberof module:ModelUser~User
+ * @static
+ */
 userSchema.statics.authenticate = async ({email, password}) => {
   try {
     // check if user exits
@@ -196,6 +336,18 @@ userSchema.statics.authenticate = async ({email, password}) => {
   }
 }
 
+/**
+ * @function deleteWithPassword
+ * @desc Delete a user by checking if the password provided is correct 
+ * @param { Object } parameters
+ * @param { String } parameters._id
+ * @param { String } parameters.password
+ * @return { Object } An object with a confirmed boolena and 
+ * the deleted user instance object in case of error to be able to recreate the user
+ * @throws an error
+ * @memberof module:ModelUser~User
+ * @static
+ */
 userSchema.statics.deleteWithPassword = async ({ _id, password }) => {
   try {
     const userToDelete = await User.findOne({ _id })
@@ -216,6 +368,13 @@ userSchema.statics.deleteWithPassword = async ({ _id, password }) => {
   }
 }
 
+/**
+ * @function forgotPasswordLockAccount
+ * @desc Lock the user account when a forgot password link is asked to avoid to log in with the old password
+ * @return { Object } An object which is the user instance
+ * @memberof module:ModelUser~User
+ * @instance
+ */
 userSchema.methods.forgotPasswordLockAccount = async function() {
   try {
     this.passwordLocked = true
@@ -225,6 +384,14 @@ userSchema.methods.forgotPasswordLockAccount = async function() {
   }
 }
 
+/**
+ * @function changePassword
+ * @desc Hash the password and save it in database, remove the passwordLocked
+ * @return { Boolean } The confirmation that the new password has been correctly savec and hashed
+ * @throws an error
+ * @memberof module:ModelUser~User
+ * @instance
+ */
 userSchema.methods.changePassword = async function(password) {
   try {
     const hashedPassword = await hashPassword(password.toString())
@@ -241,6 +408,11 @@ userSchema.methods.changePassword = async function(password) {
   }
 }
 
+/** 
+ * The class for the user model in mongoose
+ * @constructor
+ * @param { UserParameters } parameters
+ */
 const User = mongoose.model('User', userSchema)
 
 export default User
